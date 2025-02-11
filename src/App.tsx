@@ -1,6 +1,6 @@
 import "./App.css";
 import { MessageTypesArray } from "./types/MessageTypes.ts";
-import MessageDisplay from "./components/one-of/MessagwDisplay.tsx";
+import MessageDisplay from "./components/one-of/MessageDisplay.tsx";
 
 const App: React.FC = () => {
   const textMessage: MessageTypesArray = {
@@ -12,7 +12,7 @@ const App: React.FC = () => {
   const imgMessage: MessageTypesArray = {
     id: "2",
     timestamp: new Date().getTime(),
-    imgPath: "path/to/image.jpg",
+    imgPath: "src/assets/img.png",
   };
 
   const urlMessage: MessageTypesArray = {
@@ -24,7 +24,7 @@ const App: React.FC = () => {
   const videoMessage: MessageTypesArray = {
     id: "4",
     timestamp: new Date().getTime(),
-    videoUrl: "path/to/video.mp4",
+    videoUrl: "src/assets/video.mov",
   };
 
   return (
