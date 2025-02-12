@@ -1,36 +1,46 @@
+import React from "react";
+
 type BaseMessage = { id: string; timestamp: number };
 
-type TextMessage = BaseMessage & { text: string };
+type TextMessage = BaseMessage & { text: string; url?: never };
 type ImgMessage = BaseMessage & { imgPath: string };
-type UrlMessage = BaseMessage & { url: string };
-type VideoContent = BaseMessage & { videoUrl: string };
+type UrlMessage = BaseMessage & { url: string; text?: never };
+type VideoMessage = BaseMessage & { videoUrl: string };
 
-export type Message = TextMessage | UrlMessage | ImgMessage | VideoContent;
+export type Message = TextMessage | UrlMessage | ImgMessage | VideoMessage;
 
 type MessageDisplayProps = {
   message: Message;
 };
 
-const MessageDisplay = (props: MessageDisplayProps) => {
-  const {
-    message: { id, videoUrl, timestamp, imgPath, text },
-  } = props;
+const isTextMessage = (message: Message): message is TextMessage =>
+  "text" in message;
+const isImgMessage = (message: Message): message is ImgMessage =>
+  "imgPath" in message;
+const isUrlMessage = (message: Message): message is UrlMessage =>
+  "url" in message;
+const isVideoMessage = (message: Message): message is VideoMessage =>
+  "videoUrl" in message;
+
+const MessageDisplay = ({ message }: MessageDisplayProps) => {
+  const { id, timestamp } = message;
+
   const getMsgContent = () => {
-    if (text) {
-      return <p>{text}</p>;
-    } else if (imgPath) {
-      return <img src={imgPath} alt="Message" />;
-    } else if (url) {
+    if (isTextMessage(message)) {
+      return <p>{message.text}</p>;
+    } else if (isImgMessage(message)) {
+      return <img src={message.imgPath} alt="Message" />;
+    } else if (isUrlMessage(message)) {
       return (
-        <a href={url} target="_blank" rel="noopener noreferrer">
-          {url}
+        <a href={message.url} target="_blank" rel="noopener noreferrer">
+          {message.url}
         </a>
       );
-    } else if (videoUrl) {
+    } else if (isVideoMessage(message)) {
       return (
         <video controls>
-          <source src={videoUrl} type="video/mp4" />
-          Your browser does not support the video tag.
+          <source src={message.videoUrl} type="video/mp4" />
+          Ваш браузер не поддерживает тег видео.
         </video>
       );
     }
