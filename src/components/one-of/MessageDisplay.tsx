@@ -1,12 +1,19 @@
-import { MessageTypesArray } from "../../types/MessageTypes";
+type BaseMessage = { id: string; timestamp: number };
+
+type TextMessage = BaseMessage & { text: string };
+type ImgMessage = BaseMessage & { imgPath: string };
+type UrlMessage = BaseMessage & { url: string };
+type VideoContent = BaseMessage & { videoUrl: string };
+
+export type Message = TextMessage | UrlMessage | ImgMessage | VideoContent;
 
 type MessageDisplayProps = {
-  message: MessageTypesArray;
+  message: Message;
 };
 
 const MessageDisplay = (props: MessageDisplayProps) => {
   const {
-    message: { id, url, videoUrl, timestamp, imgPath, text },
+    message: { id, videoUrl, timestamp, imgPath, text },
   } = props;
   const getMsgContent = () => {
     if (text) {
